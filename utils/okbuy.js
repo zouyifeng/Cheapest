@@ -5,28 +5,30 @@ const browserMsg = {
   'Content-Type': 'application/x-www-form-urlencoded'
 }
 
-const fetchOKBuyProductInfo = function(url, callback) {
-  let ret = {
-    url: url,
-    name: '',
-    price: '',
-    icon: ''
-  }
-  const id = url.match(/\d+/)[0]
-
-  const pageInfoPromsie = request(url)
-
-  const pricePromise = request
-    .get(`http://www.okbuy.com/ajax/detail/product_info/${id}`)
-    .set(browserMsg)
-
-  Promise.all([pageInfoPromsie, pricePromise]).then((args) => {
-    const $ = cheerio.load(args[0].text)
-    ret.price = JSON.parse(args[1].text).salepr
-    ret.name = $('#prodTitleName').text()
-    ret.icon = $('#zoom1').find('img').eq(0).attr('src')
+const fetchOKBuyProductInfo = function(url) {
+  return new Promise((resolve, reject) => {
+    let ret = {
+      url: url,
+      name: '',
+      price: '',
+      icon: ''
+    }
+    const id = url.match(/\d+/)[0]
   
-    callback(ret)
+    const pageInfoPromsie = request(url)
+  
+    const pricePromise = request
+      .get(`http://www.okbuy.com/ajax/detail/product_info/${id}`)
+      .set(browserMsg)
+  
+    Promise.all([pageInfoPromsie, pricePromise]).then((args) => {
+      const $ = cheerio.load(args[0].text)
+      ret.price = JSON.parse(args[1].text).salepr
+      ret.name = $('#prodTitleName').text()
+      ret.icon = $('#zoom1').find('img').eq(0).attr('src')
+    
+      resolve(ret)
+    })
   })
 }
 

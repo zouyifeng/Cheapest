@@ -1,6 +1,7 @@
 const db = require('../db')
 const Sequelize = require('sequelize')
 const fetchOKBuyProductInfo = require('../utils/okbuy')
+const mailer = require('../utils/mailer')
 const schedule = require('node-schedule')
 
 const log4js = require('log4js');
@@ -60,11 +61,56 @@ function add(info) {
   })
 }
 
+function list () {
+  return new Promise((resolve, reject) => {
+    App.findAll()
+      .then(apps => {
+        resolve(apps)
+      })
+      .then(err => reject(err))
+  })
+}
+
+// App.destroy({
+//   where: {
+//     url: 'cc'
+//   }
+// })
+
+// list().then(apps => apps.map((app, index) => {
+//   console.log(app.url)
+// }))
+
+function check() {
+  return new Promise((resolve, reject) => {
+    let count = 0 
+    list().then(apps => apps.map((app, index) => {
+      fetchOKBuyProductInfo(app.url)  
+        .then(info =>{
+          console.log(info)
+          logger.info('找到货物 ', info.name)
+          count++
+          if (count === apps.length) {
+            // resolve()
+            logger.info('所有物品检索完毕')
+            
+          }
+          if (info.price !== app.price) {
+            logger.info(`${info.name} 价格发生改变,原价 ￥${app.price}, 现价 ￥${info.price}`)
+            mailer('zouyifeng@aliyun.com', app)
+            // const numNewPrice = info.price
+            // const numOriginPrice = app.price;
+          }
+        })
+    }))
+  })
+}
+
 // fetchOKBuyProductInfo('http://www.okbuy.com/p-converse/detail-shoe-17062555.html', add)
-i = 0
 function productSchedule() {
   schedule.scheduleJob('3 * * * * *', function () {
-    console.log(i++)
+    // console.log(i++)
+    check()
   })
 }
 
