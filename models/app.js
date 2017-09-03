@@ -1,10 +1,23 @@
 const db = require('../db')
 const Sequelize = require('sequelize')
+const fetchOKBuyProductInfo = require('../utils/okbuy')
+const schedule = require('node-schedule')
 
-const cheerio = require('cheerio')
-const request = require('superagent')
+const log4js = require('log4js');
+const logger = log4js.getLogger()
 
-var iconv = require('iconv-lite')
+log4js.configure({
+  appenders: {
+    out: { type: 'console' },
+    app: { type: 'file', filename: 'logs/site.log' }
+  },
+  categories: {
+    default: { appenders: ['out', 'app'], level: 'debug' }
+  }
+});
+
+logger.debug("Time:", new Date());
+
 
 
 const App = db.define('app', {
@@ -13,7 +26,7 @@ const App = db.define('app', {
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true
   },
-  status:{
+  status: {
     type: Sequelize.INTEGER,
     defaultValue: 0
   },
@@ -22,6 +35,42 @@ const App = db.define('app', {
   icon: Sequelize.STRING,
   price: Sequelize.STRING
 })
+
+function add(info) {
+  return new Promise((resolve, reject) => {
+    App.findOne({
+      where: {
+        name: info.name
+      }
+    }).then(product => {
+      if (product) {
+        reject({
+          status: 2,
+          message: 'product existed'
+        })
+      } else {
+        App.create({
+          name: info.name,
+          price: info.price,
+          icon: info.icon,
+          url: info.url
+        }).then(product => resolve(product))
+      }
+    })
+  })
+}
+
+// fetchOKBuyProductInfo('http://www.okbuy.com/p-converse/detail-shoe-17062555.html', add)
+i = 0
+function productSchedule() {
+  schedule.scheduleJob('3 * * * * *', function () {
+    console.log(i++)
+  })
+}
+
+productSchedule()
+
+
 
 // App.sync()
 
@@ -33,15 +82,6 @@ const App = db.define('app', {
 // }).then(app => console.log(app))
 
 // App.findAll().then(apps => {
-  // console.log(apps)
+// console.log(apps)
 // })
 
-request.get('https://item.jd.com/4586850.html', (err, res, body) => {
-    // console.log(res.text)
-
-    const html = iconv.decode(body, 'gbk')
-    const $ = cheerio.load(html)
-    // console.log($('*[itemprop]'))
-    console.log($('.sku-name').text().trim())
-    // console.log($('.price'))
-  })
