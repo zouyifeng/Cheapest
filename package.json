@@ -1,6 +1,9 @@
 {
   "dependencies": {
+    "body-parser": "^1.17.2",
     "cheerio": "^1.0.0-rc.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.4",
     "log4js": "^2.3.3",
     "node-schedule": "^1.2.4",
     "nodemailer": "^4.1.0",
