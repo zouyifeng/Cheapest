@@ -17,11 +17,7 @@ log4js.configure({
   }
 });
 
-logger.debug("Time:", new Date());
-
-
-
-const App = db.define('app', {
+const App = db.define('apps', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
@@ -35,6 +31,18 @@ const App = db.define('app', {
   name: Sequelize.STRING,
   icon: Sequelize.STRING,
   price: Sequelize.STRING
+})
+
+
+App.create({
+  name: 'info.name',
+  price: 'info.price',
+  icon: 'info.icon',
+  url: 'info.ur'
+}).then(product => resolve(product))
+
+App.findAll().then(newWatcher => {
+  console.log(newWatcher)
 })
 
 function add(info) {
@@ -86,8 +94,7 @@ function check() {
     let count = 0 
     list().then(apps => apps.map((app, index) => {
       fetchOKBuyProductInfo(app.url)  
-        .then(info =>{
-          console.log(info)
+        .then(info => {
           logger.info('找到货物 ', info.name)
           count++
           if (count === apps.length) {
@@ -115,8 +122,6 @@ function productSchedule() {
 }
 
 productSchedule()
-
-
 
 // App.sync()
 
