@@ -9,6 +9,7 @@
     "node-schedule": "^1.2.4",
     "nodemailer": "^4.1.0",
     "sequelize": "^4.8.0",
-    "superagent": "^3.6.0"
+    "superagent": "^3.6.0",
+    "puppeteer": "^0.12.0"
   }
 }

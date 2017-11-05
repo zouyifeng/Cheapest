@@ -1,0 +1,40 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn
+
+PATH: 
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+Yarn version: 
+  1.2.1
+
+Node version: 
+  8.7.0
+
+Platform: 
+  darwin x64
+
+npm manifest: 
+  {
+    "dependencies": {
+      "body-parser": "^1.17.2",
+      "cheerio": "^1.0.0-rc.2",
+      "cookie-parser": "^1.4.3",
+      "ejs": "^2.5.7",
+      "express": "^4.15.4",
+      "log4js": "^2.3.3",
+      "node-schedule": "^1.2.4",
+      "nodemailer": "^4.1.0",
+      "sequelize": "^4.8.0",
+      "superagent": "^3.6.0",
+      "puppeteer": "^0.12.0"    
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: ENOENT: no such file or directory, copyfile '/Users/zouyifeng/Library/Caches/Yarn/v1/npm-aws-sign2-0.6.0-14342dd38dbcc94d0e5b87d763cd63612c0e794f/LICENSE' -> '/Users/zouyifeng/Documents/Project/myself/Cheapest/node_modules/loggly/node_modules/aws-sign2/LICENSE'

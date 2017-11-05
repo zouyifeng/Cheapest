@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Cheapest</title>
+  <title>handsome</title>
 </head>
 <body>
-  <h3>好乐买</h3>
+  <!-- <h3>好乐买</h3>
   <form action="/okbuy/product">
     <label for="url">url</label>
     <input type="text" id="url">
@@ -21,6 +21,33 @@
     <label for="email">email</label>
     <input id="email" name="email" type="text">
     <input type="submit" value="确定">
-  </form>
+  </form> -->
+  <h3>get voice here</h3>
+  <input id="url" type="text" placeholder="key the url in">
+  <input id="submit" type="submit" value="confirm">
+  <div id="download"></div>
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+  <script>
+    $(function(){
+      $('#submit').click(function(){
+        const url = $('#url').val()
+        if (url) {
+          $.ajax({
+            url: '/api/getVoice',
+            type: 'post',
+            data: {
+              url: url
+            }
+          }).done(function(res){
+            console.log(res)
+            const a = `<a href="${res.url}" name="${res.name}" download="${res.name}">${res.name} download</a><br>`
+            $('#download').append(a)
+          })
+        } else {
+          alert('什么都没输入，逗我呢？！')
+        }
+      })
+    })
+  </script>
 </body>
 </html>

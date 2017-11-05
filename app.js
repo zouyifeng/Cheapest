@@ -4,7 +4,7 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const routes = require('./routes/index')
-const api = require('./routes/api')
+// const api = require('./routes/api')
 
 const app = express()
 
@@ -17,6 +17,6 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', routes)
-app.use('/', api)
+// app.use('/', api)
 
 module.exports = app
