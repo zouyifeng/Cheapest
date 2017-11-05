@@ -13,6 +13,8 @@ router.post('/api/getVoice', function (req, res, next) {
     getVoice(req.body.url).then((data) => {
       console.log(data)
       res.json(data)  
+    }, (err) => {
+      console.log(err)
     })
   }
 })
