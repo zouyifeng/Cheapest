@@ -15,6 +15,8 @@ router.post('/api/getVoice', function (req, res, next) {
       res.json(data)  
     }, (err) => {
       console.log(err)
+    }).catch(e => {
+      console.log(e)
     })
   }
 })
