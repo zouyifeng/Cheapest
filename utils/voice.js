@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 
 const getVoiceUrl = async (url) => {
   const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
-  const page = await cd .newPage();
+  const page = await browser.newPage();
   await page.goto(url);
   const content = await page.content();
   const $ = await cheerio.load(content);
