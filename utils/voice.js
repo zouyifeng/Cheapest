@@ -1,10 +1,10 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 
-const getVoiceUrl = async () => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto('https://mp.weixin.qq.com/s/llV1wW1hY5M80AoT7_LpZQ');
+const getVoiceUrl = async (url) => {
+  const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+  const page = await cd .newPage();
+  await page.goto(url);
   const content = await page.content();
   const $ = await cheerio.load(content);
   const voiceId = await $('mpvoice').attr('voice_encode_fileid');
