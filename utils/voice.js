@@ -22,7 +22,7 @@ const getVoiceUrl = async (url) => {
   }
   
   await browser.close();
-  return { url: `https://res.wx.qq.com/voice/getvoice?mediaid=${voiceId}` , '下载' }
+  return { url: `https://res.wx.qq.com/voice/getvoice?mediaid=${voiceId}` ,  name:'下载' }
 };
 
 // getVoiceUrl('https://mp.weixin.qq.com/s/llV1wW1hY5M80AoT7_LpZQ')
