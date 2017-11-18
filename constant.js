@@ -1,0 +1,1 @@
+const HTTP_ERROR_CODE = 5000

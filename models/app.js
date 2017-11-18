@@ -71,11 +71,13 @@ function add(info) {
 
 function list () {
   return new Promise((resolve, reject) => {
-    App.findAll()
+    Sequelize.sync().then(() => {
+      App.findAll()
       .then(apps => {
         resolve(apps)
       })
       .then(err => reject(err))
+    })
   })
 }
 
@@ -85,9 +87,9 @@ function list () {
 //   }
 // })
 
-// list().then(apps => apps.map((app, index) => {
-//   console.log(app.url)
-// }))
+list().then(apps => apps.map((app, index) => {
+  console.log(app.url)
+}))
 
 function check() {
   return new Promise((resolve, reject) => {
@@ -121,7 +123,7 @@ function productSchedule() {
   })
 }
 
-productSchedule()
+// productSchedule()
 
 // App.sync()
 

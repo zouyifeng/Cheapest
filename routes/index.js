@@ -1,24 +1,13 @@
-const express = require('express')
-const router = express.Router()
-const getVoice = require('../utils/voice')
-
-router.get('/',function (req, res, next) {
-  res.render('index')
-})
-
-router.post('/api/getVoice', function (req, res, next) {
-  console.log(req.body.url)
-  if (req.body.url) {
-    const info = {} 
-    getVoice(req.body.url).then((data) => {
-      console.log(data)
-      res.json(data)  
-    }, (err) => {
-      console.log(err)
-    }).catch(e => {
-      console.log(e)
-    })
-  }
-})
-
-module.exports = router
+module.exports = function(app) {
+	app.use('/', require('./api'));
+	app.use('/', require('./router'));
+	app.use(function(req, res, next) {
+		var err = new Error('Not Found')
+		err.status = 404;
+		next(err);
+	});
+	app.use(function(err, req, res, next){
+		// res.status(404).send('页面不存在，正在为您跳转到首页~')
+		res.redirect('/');
+	})
+}; 

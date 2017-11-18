@@ -3,8 +3,7 @@ const path = require('path')
 // const favicon = require('serve-favicon')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
-const routes = require('./routes/index')
-// const api = require('./routes/api')
+const routes = require('./routes')
 
 const app = express()
 
@@ -16,7 +15,6 @@ app.use(bodyParser.urlencoded({ extend: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/', routes)
-// app.use('/', api)
+routes(app)
 
 module.exports = app

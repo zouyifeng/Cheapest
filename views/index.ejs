@@ -14,15 +14,17 @@
     <label for="email">email</label>
     <input type="text" id="email">
     <input type="submit" value="确定">
-  </form>
+  </form> -->
 
-  <h3>电影天堂</h3>
-  <form action="/api/movie/add" method="post">
+  <h3>subscribe movie in <a href="www.dytt8.net">www.dytt8.net</a></h3>
+  <form action="/api/movie/add" method="POST">
     <label for="email">email</label>
     <input id="email" name="email" type="text">
     <input type="submit" value="确定">
-  </form> -->
-  <h3>get voice here</h3>
+  </form>
+  <ul id="watchers">
+    <li v-for="(item, index) in watchers">{{ item.email }}</li>
+  </ul>
   <input id="url" type="text" placeholder="key the url in">
   <input id="submit" type="submit" value="confirm">
   <div id="download"></div>
@@ -47,6 +49,24 @@
           alert('什么都没输入，逗我呢？！')
         }
       })
+    })
+  </script>
+  <script src="https://cdn.bootcss.com/vue/2.5.3/vue.js"></script>
+  <script src="https://cdn.bootcss.com/axios/0.17.1/axios.min.js"></script>
+  <script>
+    new Vue({
+      el: '#watchers',
+      data: function() {
+        return {
+          watchers: []
+        }
+      },
+      created: function() {
+        axios.get('/api/watcher/list').then(data => {
+          console.log(data.data)
+          this.watchers = data.data.data
+        })
+      }
     })
   </script>
 </body>

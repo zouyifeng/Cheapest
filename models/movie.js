@@ -26,38 +26,43 @@ const Watcher = db.define('watcher', {
   email: Sequelize.STRING
 })
 
-Watcher.sync({force: false}).then(() => {
-  return Watcher.create({
-    email: "813306660@qq.com"
-  })
-})
+// Watcher.sync().then(() => {
+//   return Watcher.create({
+//     email: "813306660@qq.com"
+//   })
+// })
 
 // console.log(watcher)
 
-Watcher.findAll().then(newWatcher => {
-  console.log(newWatcher.length)
-})
 
-// function addWatcher(email) {
-//   return new Promise((resolve, reject) => {
-//     watcher.findOne({
-//       where: {
-//         email: email
-//       }
-//     }).then(watcher => {
-//       if (watcher) {
-//         reject({
-//           status: 2,
-//           message: 'watcher existed'
-//         })
-//       } else {
-//         watcher.create({
-//           name: email,
-//         }).then(newWatcher => resolve(newWatcher))
-//       }
-//     })
-//   })
-// }
+function addWatcher(email) {
+  return new Promise((resolve, reject) => {
+    Watcher.findOne({
+      where: {
+        email: email
+      }
+    }).then(watcher => {
+      if (watcher) {
+        reject({
+          status: 2,
+          message: 'watcher existed'
+        })
+      } else {
+        Watcher.create({
+          email
+        }).then(newWatcher => resolve(newWatcher))
+      }
+    })
+  })
+}
+
+function findAllWatcher () {
+  return new Promise((resolve, reject) => {
+    Watcher.all().then(data => {
+      resolve(data)
+    })
+  })
+}
 
 // function list () {
 //   return new Promise((resolve, reject) => {
@@ -129,6 +134,9 @@ Watcher.findAll().then(newWatcher => {
 // console.log(apps)
 // })
 
-// module.exports = {
-//   addWatcher
-// }
+module.exports = {
+  addWatcher,
+  findAllWatcher
+}
+
+// module.exports = Watcher
