@@ -5,55 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>handsome</title>
+  <style>
+    body {
+      display: flex;
+    }
+    #okbuy,#watchers,#voice {
+      flex: 1;
+    }
+  </style>
 </head>
 <body>
-  <!-- <h3>好乐买</h3>
-  <form action="/okbuy/product">
-    <label for="url">url</label>
-    <input type="text" id="url">
-    <label for="email">email</label>
-    <input type="text" id="email">
-    <input type="submit" value="确定">
-  </form> -->
-
-  <h3>subscribe movie in <a href="www.dytt8.net">www.dytt8.net</a></h3>
-  <form action="/api/movie/add" method="POST">
-    <label for="email">email</label>
-    <input id="email" name="email" type="text">
-    <input type="submit" value="确定">
-  </form>
-  <ul id="watchers">
-    <li v-for="(item, index) in watchers">{{ item.email }}</li>
-  </ul>
-  <input id="url" type="text" placeholder="key the url in">
-  <input id="submit" type="submit" value="confirm">
-  <div id="download"></div>
+  <div id="okbuy">
+    <h3>okbuy</h3>
+    <form action="/okbuy/product">
+      <label for="url">url</label>
+      <input type="text" id="url">
+      <label for="email">email</label>
+      <input type="text" id="email">
+      <input type="submit" value="确定">
+    </form>
+  </div>
+  <div id="watchers">
+    <h3>subscribe movie</h3>
+    <form action="/api/movie/add" method="POST">
+      <label for="email">email</label>
+      <input id="email" name="email" type="text">
+      <input type="submit" value="确定">
+    </form>
+    <ul>
+      <li v-for="(item, index) in watchers">{{ item.email }}</li>
+    </ul>
+  </div>
+  <div id="voice">
+    <h3>get voice here</h3>
+    <input id="url" type="text" placeholder="key the url in" v-model="url">
+    <input id="submit" type="submit" value="confirm" @click="submit">
+    <div id="download">
+      <div v-for="(item,index) in downloadList">
+        <a :href="item.url" :download="item.name">{{item.name}} download</a>          
+      </div>
+    </div>
+  </div>
   <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
-  <script>
-    $(function(){
-      $('#submit').click(function(){
-        const url = $('#url').val()
-        if (url) {
-          $.ajax({
-            url: '/api/getVoice',
-            type: 'post',
-            data: {
-              url: url
-            }
-          }).done(function(res){
-            console.log(res)
-            const a = `<a href="${res.url}" name="${res.name}" download="${res.name}">${res.name} download</a><br>`
-            $('#download').append(a)
-          })
-        } else {
-          alert('什么都没输入，逗我呢？！')
-        }
-      })
-    })
-  </script>
   <script src="https://cdn.bootcss.com/vue/2.5.3/vue.js"></script>
   <script src="https://cdn.bootcss.com/axios/0.17.1/axios.min.js"></script>
   <script>
+    // movie
     new Vue({
       el: '#watchers',
       data: function() {
@@ -66,6 +63,37 @@
           console.log(data.data)
           this.watchers = data.data.data
         })
+      }
+    })
+    // okbuy
+    new Vue({
+      el: '#okbuy',
+      data: function() {
+        return {
+
+        }
+      },
+      created: function() {
+        
+      }
+    })
+    // voice
+    new Vue({
+      el: '#voice',
+      data: function() {
+        return {
+          url: '',
+          downloadList: []
+        }
+      },
+      methods: {
+        submit: function() {
+          axios.post('/api/voice', {data: { url: this.url }})
+            .then(res => {
+              console.log(res)
+              this.downloadList.push(res.data)
+            })
+        }
       }
     })
   </script>

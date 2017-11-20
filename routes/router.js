@@ -12,17 +12,16 @@ router.get('/',function (req, res, next) {
   })
 })
 
-router.post('/api/getVoice', function (req, res, next) {
-  console.log(req.body.url)
-  if (req.body.url) {
+router.post('/api/voice', function (req, res, next) {
+  console.log(req.body.data.url)
+  if (req.body.data) {
     const info = {} 
-    getVoice(req.body.url).then((data) => {
-      console.log(data)
+    getVoice(req.body.data.url).then((data) => {
       res.json(data)
     }, (err) => {
-      console.log(err)
+      res.json({err: 'err'})      
     }).catch(e => {
-      console.log(e)
+      res.json({err: 'err'})            
     })
   }
 })
